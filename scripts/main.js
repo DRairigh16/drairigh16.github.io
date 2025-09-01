@@ -1,4 +1,5 @@
 const myHeading = document.querySelector("h1")
+const myText = document.querySelector("p")
 const myButton = document.querySelector("button")
 const myImage = document.querySelector("img")
 let cool = "Mozilla"
@@ -9,12 +10,14 @@ myImage.addEventListener("click", ()=>{
     if (src == "images/firefox-icon.png"){
         myImage.setAttribute("src", "images/firefox-icon2.png")
         myHeading.textContent = `Sprint 127 is cool, ${localStorage.getItem("name")}`
-        cool = "Sprint 127" 
+        cool = "Sprint 127"
+        myText.textContent = myText.textContent.replaceAll("Mozilla", "Sprint 127");
     }
     if (src == "images/firefox-icon2.png"){
         myImage.setAttribute("src", "images/firefox-icon.png")
         myHeading.textContent = `Mozilla is cool, ${localStorage.getItem("name")}`
         cool = "Mozilla"
+        myText.textContent = myText.textContent.replaceAll("Sprint 127", "Mozilla");
     }
 })
 
