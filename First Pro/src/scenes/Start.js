@@ -4,6 +4,7 @@ export class Boom extends Phaser.Scene {
 
     constructor() {
         super('Boom');
+        this.highScore = 0;
     }
 
     preload ()
@@ -13,6 +14,7 @@ export class Boom extends Phaser.Scene {
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.audio("theme", "assets/perplex-park.mp3");
     }
 
     create ()
@@ -49,6 +51,7 @@ export class Boom extends Phaser.Scene {
 
         this.physics.add.collider(this.bombs, this.platforms);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        this.sound.play("theme", {loop: true})
           }
 
     update ()
@@ -71,7 +74,10 @@ export class Boom extends Phaser.Scene {
         star.disableBody(true, true);
         
         this.score += 10;
-        this.scoreText.setText("Score: "+this.score.toString());
+        if (this.score > this.highScore){
+            this.highScore = this.score
+        }
+        this.scoreText.setText("Score: "+this.score.toString()+"\nHigh Score: "+this.highScore);
 
         if (this.stars.countActive(true)===0){
             this.stars.children.iterate(child=>{
