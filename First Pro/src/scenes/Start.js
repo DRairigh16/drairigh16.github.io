@@ -1,4 +1,4 @@
-seimport {Player} from "./../gameObjects/Player.js"
+import {Player} from "./../gameObjects/Player.js"
 export class Boom extends Phaser.Scene {
 
 
