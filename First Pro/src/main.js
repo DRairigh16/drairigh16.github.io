@@ -1,4 +1,5 @@
 import {Boom} from "./scenes/Start.js"
+import {GameOver} from "./scenes/GameOver.js"
 var config = {
         type: Phaser.AUTO,
         width: 800,
@@ -16,7 +17,7 @@ var config = {
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH
         },
-        scene: Boom
+        scene: [Boom,GameOver,]
     };
 
 
