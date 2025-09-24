@@ -4,7 +4,9 @@ export class Boom extends Phaser.Scene {
 
     constructor() {
         super('Boom');
-        this.highScore = 0;
+        if (!localStorage.getItem("highScore")){
+            this.highScore = 0;
+        }
     }
 
     preload ()
