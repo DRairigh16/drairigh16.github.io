@@ -1,4 +1,4 @@
-import {Player} from "./../gameObjects/Player.js"
+seimport {Player} from "./../gameObjects/Player.js"
 export class Boom extends Phaser.Scene {
 
 
@@ -6,6 +6,8 @@ export class Boom extends Phaser.Scene {
         super('Boom');
         if (!localStorage.getItem("highScore")){
             this.highScore = 0;
+        }else{
+            this.highScore = localStorage.getItem("highScore")
         }
     }
 
@@ -93,7 +95,7 @@ export class Boom extends Phaser.Scene {
         this.physics.pause();
         player.setTint(0xff0000);
         player.anims.play("turn");
-        this.time.delayedCall(2000, ()=>{this.scene.start("Game Over");});
+        this.time.delayedCall(2000, ()=>{localStorage.setItem("highScore", this.highScore);this.scene.start("Game Over");});
     }
     releaseBomb(){
         var x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0,400);
