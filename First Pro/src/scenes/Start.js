@@ -4,21 +4,23 @@ export class Boom extends Phaser.Scene {
 
     constructor() {
         super('Boom');
-        if (!localStorage.getItem("highScore")){
-            this.highScore = 0;
-        }else{
-            this.highScore = localStorage.getItem("highScore")
-        }
+        this.highScore = 0;
     }
 
     preload ()
     {
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('sky', 'assets/assets/sky.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.audio("theme", "assets/perplex-park.mp3");
+
+        this.load.image("bounce", "assets/powerups/bounce.png");
+        this.load.image("speed", "assets/powerups/speed.png");
+        this.load.image("shield", "assets/powerups/shield.png");
+        this.load.image("magnet", "assets/powerups/magnet.png");
+        this.load.image("fly", "assets/powerups/fly.png");
     }
 
     create ()
@@ -73,13 +75,30 @@ export class Boom extends Phaser.Scene {
         if (this.cursors.up.isDown){
             this.player.jump()
         }
+        if (this.cursors.space.isDown && this.player.power_ups.bounce){
+            //this.releaseBomb();
+            this.player.setBounceY(1.1)
+        }else{
+            this.player.setBounceY(0.2)
+        }
+        if (this.player.power_ups.magnet){
+            this.stars.children.getArray().forEach((star)=>{
+                if (Math.round(Math.sqrt(Math.abs(star.x-this.player.x)**2+Math.abs(star.y-this.player.y)**2)) < 100 && star.active){
+                    this.collectStar(this.player, star);
+                }
+            })
+        }
+        this.player.updatePow();
        }
     collectStar(player, star){
         star.disableBody(true, true);
         
         this.score += 10;
         if (this.score > this.highScore){
-            this.highScore = this.score
+            this.highScore = this.score;
+        }
+        if(this.score%180 == 0){
+            this.player.getPowerUp(["bounce", "speed", "shield", "magnet", "fly"][Phaser.Math.Between(0, 4)]);
         }
         this.scoreText.setText("Score: "+this.score.toString()+"\nHigh Score: "+this.highScore);
 
@@ -92,10 +111,15 @@ export class Boom extends Phaser.Scene {
         }
     }
     hitBomb(player, bomb){
-        this.physics.pause();
-        player.setTint(0xff0000);
-        player.anims.play("turn");
-        this.time.delayedCall(2000, ()=>{localStorage.setItem("highScore", this.highScore);this.sound.stopAll();this.scene.start("Game Over");});
+        if (this.player.power_ups.shield){
+            this.player.power_ups.shield = false;
+            this.player.shield.destroy();
+        }else{
+            this.physics.pause();
+            player.setTint(0xff0000);
+            player.anims.play("turn");
+            this.time.delayedCall(2000, ()=>{this.sound.stopAll();this.scene.start("Game Over");});
+        }
     }
     releaseBomb(){
         var x = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0,400);
