@@ -1,3 +1,4 @@
+window.location = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Redirections"
 import {Boom} from "./scenes/Start.js"
 import {GameOver} from "./scenes/GameOver.js"
 var config = {
