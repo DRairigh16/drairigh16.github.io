@@ -1,4 +1,3 @@
-window.location = "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Redirections"
 import { Game } from './scenes/Game.js';
 import {TheLine} from './scenes/TheLine.js';
 import {Clipboard} from './scenes/Clipboard.js'
